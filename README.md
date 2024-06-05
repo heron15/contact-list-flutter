@@ -5,9 +5,7 @@ A new contact list Flutter project.
 ## Screenshots
 
 <div style="display:flex">
-    <img src="screenshots/s1.jpg" alt="Home Screen" width="200" height="400" style="margin-right: 30px;">
-    <img src="screenshots/s2.jpg" alt="Home Screen" width="200" height="400" style="margin-right: 30px;">
-    <img src="screenshots/s3.jpg" alt="Home Screen" width="200" height="400" style="margin-right: 30px;">
+    
 </div>
 
 This project is a starting point for a Flutter application.
