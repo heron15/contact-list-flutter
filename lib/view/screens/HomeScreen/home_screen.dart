@@ -214,7 +214,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemCount: _contacts.length,
                                 shrinkWrap: true,
                                 primary: false,
-                                physics: const NeverScrollableScrollPhysics(),
                                 mainAxisSpacing: 4,
                                 crossAxisSpacing: 4,
                                 crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
