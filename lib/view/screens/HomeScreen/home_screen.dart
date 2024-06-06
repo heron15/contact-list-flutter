@@ -1,6 +1,9 @@
 import 'package:contact_list/utils/app_color.dart';
+import 'package:contact_list/view/screens/HomeScreen/grid_item.dart';
 import 'package:contact_list/view/screens/HomeScreen/validate_checking_fun.dart';
+import 'package:contact_list/view/screens/HomeScreen/view_type.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'list_item.dart';
@@ -18,6 +21,17 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final List<Map<String, String>> _contacts = [];
+  ViewType _viewType = ViewType.list;
+
+  void _toggleViewType() {
+    setState(() {
+      if (_viewType == ViewType.list) {
+        _viewType = ViewType.grid;
+      } else {
+        _viewType = ViewType.list;
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -124,8 +138,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text("Contact List"),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.grid_view_outlined),
+            onPressed: _toggleViewType,
+            icon: Icon(
+                _viewType == ViewType.list ? Icons.grid_view_outlined : Icons.view_list_rounded),
           )
         ],
       ),
@@ -179,19 +194,41 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    ListView.builder(
-                      primary: false,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: _contacts.length,
-                      itemBuilder: (context, index) {
-                        return ListItem(
-                          name: _contacts[index]['name'],
-                          number: _contacts[index]['number'],
-                          onLongPressed: () => _deleteContactDialog(index),
-                        );
-                      },
-                    ),
+                    _viewType == ViewType.list
+                        ? ListView.builder(
+                            primary: false,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: _contacts.length,
+                            itemBuilder: (context, index) {
+                              return ListItem(
+                                name: _contacts[index]['name'],
+                                number: _contacts[index]['number'],
+                                onLongPressed: () => _deleteContactDialog(index),
+                              );
+                            },
+                          )
+                        : OrientationBuilder(
+                            builder: (BuildContext context, Orientation orientation) {
+                              return StaggeredGridView.countBuilder(
+                                itemCount: _contacts.length,
+                                shrinkWrap: true,
+                                primary: false,
+                                physics: const NeverScrollableScrollPhysics(),
+                                mainAxisSpacing: 4,
+                                crossAxisSpacing: 4,
+                                crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
+                                itemBuilder: (context, index) {
+                                  return GridItem(
+                                    name: _contacts[index]['name'],
+                                    number: _contacts[index]['number'],
+                                    onLongPressed: () => _deleteContactDialog(index),
+                                  );
+                                },
+                                staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
+                              );
+                            },
+                          ),
                   ],
                 ),
               ),

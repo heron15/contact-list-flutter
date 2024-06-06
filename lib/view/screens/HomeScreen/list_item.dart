@@ -17,6 +17,7 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 2,
       color: AppColor.cardBg,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
